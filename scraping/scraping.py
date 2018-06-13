@@ -8,6 +8,7 @@ subscription_key = "ここにキーを入力"
 assert subscription_key
 
 search_url = "https://api.cognitive.microsoft.com/bing/v7.0/images/search"
+directory_name = "haze"
 search_term = "ハゼ"
 
 thumbnail_urls = []
@@ -24,4 +25,4 @@ for i in range(len(thumbnail_urls)):
         image_data = requests.get(thumbnail_urls[i])
         image_data.raise_for_status()
         image = Image.open(BytesIO(image_data.content))
-        image.save(os.path.join("./image/", (str(i) +".bmp")))
+        image.save(os.path.join("./image_source/",directory_name, (str(i) +".bmp")))

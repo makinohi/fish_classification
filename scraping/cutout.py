@@ -8,6 +8,7 @@ sx, sy = 0, 0
 gx, gy = 0, 0
 rectangles = []
 ok = False
+directory_name = "haze"
 
 def draw_circle(event,x,y,flags,param):
     global sx, sy, gx, gy, drawing
@@ -33,14 +34,14 @@ img = np.zeros((256, 256, 3), np.uint8)
 cv2.namedWindow('image')
 cv2.setMouseCallback('image',draw_circle)
 
-files = os.listdir('./image')
-os.mkdir('./image_out')
+files = os.listdir(os.path.join('./image_source/',directory_name))
+os.mkdir(os.path.join('./image_cutout', directory_name))
 
 i = 0
 while i < len(files):
     rectangles = []
     while True:
-        img = cv2.imread(os.path.join('./image/',files[i]))
+        img = cv2.imread(os.path.join('./image_source/',directory_name, files[i]))
         for r in rectangles:
             cv2.rectangle(img, r[0], r[1], (255,255,255), 2)
         if drawing:
@@ -66,7 +67,7 @@ while i < len(files):
                     h = abs(r[0][1] - r[1][1])
                     
                     cutout = img[y:y+h,x:x+w]
-                    cv2.imwrite(os.path.join('./image_out/',files[i]), cutout)
+                    cv2.imwrite(os.path.join('./image_cutout/',directory_name,files[i]), cutout)
             i += 1
             break
         elif k == ord('b'):
