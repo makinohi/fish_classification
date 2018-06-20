@@ -1,11 +1,61 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>魚判別サービス</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+      <title>魚判別サービス</title>
+          <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+          <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
   </head>
   <body>
-    <h1>メインページ</h1>
-  </body>
+	<div>
+		<canvas id="cvs1" width="224" height="224"></canvas>
+		<br/>
+		<input type="file" id="myfile"><br>
+	    <button onclick="callPostMethod()">判定する</button>
+	    <br />
+	    <span id="result"></span>
+	</div>
+
+	<script type="text/javascript">
+		$(function(){
+		  $('#myfile').change(function(e){
+		 
+		    var file = e.target.files[0];
+		    var reader = new FileReader();
+		 
+		    //2Dコンテキストのオブジェクトを生成する
+		    var cvs = document.getElementById('cvs1');
+		    var ctx = cvs.getContext('2d');
+		 
+		    //画像でない場合は処理終了
+		   if(file.type.indexOf("image") < 0){
+		      return false;
+		    }
+		 
+		    //アップロードした画像を設定する
+		    reader.onload = (function(file){
+		      return function(e){
+		 
+		        var img = new Image();
+		        img.src = e.target.result;
+		        img.onload = function() {
+		          ctx.drawImage(img, 0, 0, 240, 240);
+		        }
+		      };
+		    })(file);
+		    reader.readAsDataURL(file);
+		  });
+		 
+		});
+		function callPostMethod() {
+		    var data = {};
+		    $.ajax("/api/fish-classification", { type: "POST", data: data,  dataType: 'json'}).then(function (data) {
+				$("#result").append("<p>Name: " + data["result"]["0"]["name"] + " confidence: " +   data["result"]["0"]["confidence"] + "</p></br>");
+				$("#result").append("<p>Name: " + data["result"]["1"]["name"] + " confidence: " +   data["result"]["1"]["confidence"] + "</p></br>");
+				$("#result").append("<p>Name: " + data["result"]["2"]["name"] + " confidence: " +   data["result"]["2"]["confidence"] + "</p></br>");
+		    }, function (e) {
+		        alert("error: " + e);
+		    });
+		}
+	</script>
+</body>
 </html>
