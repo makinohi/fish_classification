@@ -35,7 +35,8 @@ cv2.namedWindow('image')
 cv2.setMouseCallback('image',draw_circle)
 
 files = os.listdir(os.path.join('./image_source/',directory_name))
-os.mkdir(os.path.join('./image_cutout', directory_name))
+if not os.path.exists(os.path.join('./image_cutout', directory_name)):
+    os.mkdir(os.path.join('./image_cutout', directory_name))
 
 i = 0
 while i < len(files):
