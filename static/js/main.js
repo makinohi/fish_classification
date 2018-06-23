@@ -37,9 +37,9 @@ function callPostMethod() {
 			})
 		.then(function (data) {
 			$('#output').find("tr:gt(0)").remove();
-			$('#output').append('<tr><td>' + data["result"]["0"]["name"] + '</td><td>' + data["result"]["0"]["confidence"] + '</td></tr>');
-			$('#output').append('<tr><td>' + data["result"]["1"]["name"] + '</td><td>' + data["result"]["1"]["confidence"] + '</td></tr>');
-			$('#output').append('<tr><td>' + data["result"]["2"]["name"] + '</td><td>' + data["result"]["2"]["confidence"] + '</td></tr>');
+			$('#output').append('<tr><td>' + data["result"]["0"]["name"] + '</td><td>' + data["result"]["0"]["prediction"] + '</td></tr>');
+			$('#output').append('<tr><td>' + data["result"]["1"]["name"] + '</td><td>' + data["result"]["1"]["prediction"] + '</td></tr>');
+			$('#output').append('<tr><td>' + data["result"]["2"]["name"] + '</td><td>' + data["result"]["2"]["prediction"] + '</td></tr>');
 		}, function (e) {
 				alert("error: " + e);
 		});
