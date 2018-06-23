@@ -13,3 +13,4 @@ six==1.10.0
 tensorflow==1.8.0
 Werkzeug==0.11.15
 Keras==2.1.6
+Pillow==4.2.1
