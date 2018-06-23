@@ -10,18 +10,30 @@
 		<title>魚判別サービス</title>
   </head>
   <body>
-		<div>
-			<canvas id="cvs1" width="224" height="224"></canvas>
-			<br/>
-			<input type="file" id="myfile"><br>
-				<button onclick="callPostMethod()">判定する</button>
-				<br />
-				<span id="result"></span>
+	<div class="container">
+		<h1 class="jumbotron-heading">Fish Classification</h1>
+		<div class="row">
+			<div class="col-md-6">
+				<canvas id="cvs1" width="224" height="224"></canvas>
+				<br/>
+				<input type="file" id="myfile">
+				<br/>
+				<button class="btn btn-primary my-2" onclick="callPostMethod()">判定する</button>
+			</div>
+			<div class="col-md-6">
+				<table id="output" class="table">
+					<tr>
+						<th class="col-md-2">種別</th>
+						<th class="col-md-2">accuracy</th>
+					</tr>
+				</table>
+			</div>
 		</div>
-
-		<!-- JS読込 -->
-		<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+	</div>
+	<!-- JS読込 -->
+	<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/popper.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
 	</body>
 </html>

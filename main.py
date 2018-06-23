@@ -4,7 +4,6 @@ from PIL import Image
 import numpy as np
 import cv2
 from flask import Flask, jsonify, render_template, request, redirect, url_for, render_template, flash, json
-
 from fish import train
 
 app = Flask(__name__)
@@ -24,15 +23,15 @@ def classification():
 
     result = []
     haze = {}
-    haze['name'] = 'haze'
+    haze['name'] = 'ハゼ'
     haze['confidence'] = str(p[0][0])
 
     kasago = {}
-    kasago['name'] = 'kasago'
+    kasago['name'] = 'カサゴ'
     kasago['confidence'] = str(p[0][1])
 
     kisu = {}
-    kisu['name'] = 'kisu'
+    kisu['name'] = 'キス'
     kisu['confidence'] = str(p[0][2])
 
     result.append(haze)
