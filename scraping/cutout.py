@@ -8,7 +8,7 @@ sx, sy = 0, 0
 gx, gy = 0, 0
 rectangles = []
 ok = False
-directory_name = "haze"
+directory_name = "kasago"
 
 def draw_circle(event,x,y,flags,param):
     global sx, sy, gx, gy, drawing

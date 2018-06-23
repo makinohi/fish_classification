@@ -8,8 +8,8 @@ subscription_key = "8e87838d2ae04cd6883484b5b6b0f408"
 assert subscription_key
 
 search_url = "https://api.cognitive.microsoft.com/bing/v7.0/images/search"
-directory_name = "haze"
-search_term = "ハゼ"
+directory_name = "kasago"
+search_term = "カサゴ"
 
 thumbnail_urls = []
 
