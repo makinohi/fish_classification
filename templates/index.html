@@ -17,6 +17,7 @@
 
 	<script type="text/javascript">
 		$(function(){
+			
 		  $('#myfile').change(function(e){
 		 
 		    var file = e.target.files[0];
@@ -34,11 +35,10 @@
 		    //アップロードした画像を設定する
 		    reader.onload = (function(file){
 		      return function(e){
-		 
 		        var img = new Image();
 		        img.src = e.target.result;
 		        img.onload = function() {
-		          ctx.drawImage(img, 0, 0, 240, 240);
+		          ctx.drawImage(img, 0, 0, 224, 224);
 		        }
 		      };
 		    })(file);
@@ -48,10 +48,20 @@
 		});
 		function callPostMethod() {
 		    var data = {};
-		    $.ajax("/api/fish-classification", { type: "POST", data: data,  dataType: 'json'}).then(function (data) {
-				$("#result").append("<p>Name: " + data["result"]["0"]["name"] + " confidence: " +   data["result"]["0"]["confidence"] + "</p></br>");
-				$("#result").append("<p>Name: " + data["result"]["1"]["name"] + " confidence: " +   data["result"]["1"]["confidence"] + "</p></br>");
-				$("#result").append("<p>Name: " + data["result"]["2"]["name"] + " confidence: " +   data["result"]["2"]["confidence"] + "</p></br>");
+				var cvs = document.getElementById('cvs1');
+
+		    $.ajax(
+					{ 
+						url:"/api/fish-classification",
+						type: "POST",
+						data:JSON.stringify(cvs.toDataURL('image/jpeg').split('base64,')[1]),
+						dataType:'json',
+						contentType:'application/json'
+					})
+				.then(function (data) {
+					$("#result").append("<p>Name: " + data["result"]["0"]["name"] + " confidence: " +   data["result"]["0"]["confidence"] + "</p></br>");
+					$("#result").append("<p>Name: " + data["result"]["1"]["name"] + " confidence: " +   data["result"]["1"]["confidence"] + "</p></br>");
+					$("#result").append("<p>Name: " + data["result"]["2"]["name"] + " confidence: " +   data["result"]["2"]["confidence"] + "</p></br>");
 		    }, function (e) {
 		        alert("error: " + e);
 		    });
