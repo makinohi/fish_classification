@@ -7,11 +7,12 @@ from keras.layers.core import Dense, Dropout, Activation, Flatten
 from keras.preprocessing.image import array_to_img, img_to_array, list_pictures, load_img
 import numpy as np
 import pandas as pd
+import PIL
 from sklearn.model_selection import train_test_split
 
-epochs = 20
-batch_size = 32
-img_size = (128,128)
+epochs = 40
+batch_size = 16
+img_size = (64,64)
 category_size = 3
 model_file_path = './model/model_weight.h5'
 
@@ -57,7 +58,7 @@ def create_model():
     model = Sequential()
 
     model.add(Conv2D(32, (3, 3), padding='same',
-                    input_shape = (128,128,3)))
+                    input_shape = (64,64,3)))
     model.add(Activation('relu'))
     model.add(Conv2D(32, (3, 3)))
     model.add(Activation('relu'))
@@ -91,6 +92,22 @@ def load_weight(model, file_path):
 def fit(model, x_train, x_test, y_train, y_test):
     model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_data = (x_test, y_test))
     model.save(model_file_path)
+
+def initialize(filePath):
+    pred_model = create_model()
+    load_weight(pred_model, filePath)
+    return pred_model
+
+def predict(model, img):
+    img = img.resize((64,64))
+    img_list = []
+    img_list.append(img_to_array(img))
+    img_np_list = np.asarray(img_list)
+    img_np_list = img_np_list.astype('float32')
+    img_np_list = img_np_list / 255.0
+    score = model.predict(img_np_list, 1)
+
+    return score
 
 if __name__ == '__main__':
 
