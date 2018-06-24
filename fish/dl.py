@@ -3,16 +3,19 @@ import csv
 import numpy as np
 import pandas as pd
 import PIL
+import tensorflow
+from keras.applications.vgg16 import VGG16
 import keras
 from keras.utils import np_utils
 from keras.layers.convolutional import Conv2D, MaxPooling2D
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation, Flatten
 from keras.preprocessing.image import array_to_img, img_to_array, list_pictures, load_img
+from keras.optimizers import SGD
 from sklearn.model_selection import train_test_split
 
-epochs = 40
-batch_size = 16
+epochs = 10
+batch_size = 8
 img_size = (64,64)
 category_size = 3
 model_file_path = './model/model_weight.h5'
@@ -96,6 +99,24 @@ def create_model():
                 metrics=['accuracy']) 
     return model
 
+def create_vgg16_model():
+    vgg16 = VGG16(include_top=False, input_shape=(224,224,3))
+    model = Sequential(vgg16.layers)
+    for layer in model.layers[:15]:
+        layer.trainable = False
+    
+    model.add(Flatten())
+    model.add(Dense(256, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(category_size))
+    model.add(Activation('softmax'))
+
+    model.compile(loss='categorical_crossentropy',
+                optimizer=SGD(lr=1e-4,momentum=0.9),
+                metrics=['accuracy']) 
+    
+    return model
+
 def load_weight(model, file_path):
     if not os.path.exists(file_path):
         return 
@@ -140,7 +161,6 @@ if __name__ == '__main__':
 
     #モデル生成
     model = create_model()
-
     #重み読込
     load_weight(model,model_file_path)
 
