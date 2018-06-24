@@ -1,4 +1,5 @@
 import os
+import csv
 import numpy as np
 import pandas as pd
 import PIL
@@ -101,7 +102,8 @@ def load_weight(model, file_path):
     model.load_weights(file_path)
 
 def fit(model, x_train, x_test, y_train, y_test):
-    model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_data = (x_test, y_test))
+    history = model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_data = (x_test, y_test))
+    write_log(history)
     model.save(model_file_path)
 
 def initialize(filePath):
@@ -119,6 +121,17 @@ def predict(model, img):
     score = model.predict(img_np_list, 1)
 
     return score
+
+def write_log(history):
+    with open('./log/history.csv', 'w', newline='') as f : 
+        w = csv.writer(f)
+        w.writerow(['acc','loss', 'val_acc', 'val_loss'])
+        for i in range(len(history.epoch)):
+            w.writerow([    history.history['acc'][i],
+                            history.history['loss'][i],
+                            history.history['val_acc'][i],
+                            history.history['val_loss'][i]
+                            ])
 
 if __name__ == '__main__':
 
